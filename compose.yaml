@@ -1,12 +1,17 @@
 services:
   faster-whisper:
     image: lscr.io/linuxserver/faster-whisper:latest
+    container_name: faster-whisper
     environment:
-      - WHISPER_MODEL=large-v3
-      - WHISPER_LANG=en
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC               # change to your timezone if you want
+      - WHISPER_MODEL=small      # ← small model (fast + accurate enough)
     volumes:
-      - /path/to/host/config:/config  # Map to server path, e.g., /opt/whisper
+      - whisper-config:/config   # model downloads once and stays forever
     ports:
-      - 10300:10300
+      - 10300:10300              # Wyoming protocol
     restart: unless-stopped
-    deploy: # If GPU server
+
+volumes:
+  whisper-config:
