@@ -3,12 +3,12 @@ services:
   whisper-asr:
     image: onerahmet/openai-whisper-asr-webservice:latest
     container_name: whisper-asr
-    ports:
-      - "9000:9000"  # Expose API on port 9000
+    # ports:
+    #   - "9000:9000"  # Remove this - Coolify handles it
     environment:
-      - ASR_MODEL=base  # Options: tiny, base, small, medium, large (start with 'base' for balance)
-      - ASR_ENGINE=openai_whisper  # Use official OpenAI engine
-      - USE_CUDA=false  # Set to true if GPU available
+      - ASR_MODEL=base
+      - ASR_ENGINE=openai_whisper
+      - USE_CUDA=false
     volumes:
-      - ./cache:/root/.cache  # Persist model downloads to speed up restarts
+      - ./cache:/root/.cache
     restart: unless-stopped
