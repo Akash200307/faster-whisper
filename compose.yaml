@@ -1,0 +1,12 @@
+services:
+  faster-whisper:
+    image: lscr.io/linuxserver/faster-whisper:latest
+    environment:
+      - WHISPER_MODEL=large-v3
+      - WHISPER_LANG=en
+    volumes:
+      - /path/to/host/config:/config  # Map to server path, e.g., /opt/whisper
+    ports:
+      - 10300:10300
+    restart: unless-stopped
+    deploy: # If GPU server
