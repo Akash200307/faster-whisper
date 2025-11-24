@@ -1,17 +1,14 @@
+version: '3.8'
 services:
-  faster-whisper:
-    image: lscr.io/linuxserver/faster-whisper:latest
-    container_name: faster-whisper
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC               # change to your timezone if you want
-      - WHISPER_MODEL=small      # ← small model (fast + accurate enough)
-    volumes:
-      - whisper-config:/config   # model downloads once and stays forever
+  whisper-asr:
+    image: onerahmet/openai-whisper-asr-webservice:latest
+    container_name: whisper-asr
     ports:
-      - 10300:10300              # Wyoming protocol
+      - "9000:9000"  # Expose API on port 9000
+    environment:
+      - ASR_MODEL=base  # Options: tiny, base, small, medium, large (start with 'base' for balance)
+      - ASR_ENGINE=openai_whisper  # Use official OpenAI engine
+      - USE_CUDA=false  # Set to true if GPU available
+    volumes:
+      - ./cache:/root/.cache  # Persist model downloads to speed up restarts
     restart: unless-stopped
-
-volumes:
-  whisper-config:
